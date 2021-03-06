@@ -3,7 +3,7 @@
 #include "../pch.h"
 
 
-class KeyListener
+class KeyMappings
 {
 public:
 	int32_t N0000004F; //0x0000

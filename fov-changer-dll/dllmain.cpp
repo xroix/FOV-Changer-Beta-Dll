@@ -72,25 +72,17 @@ IAsyncAction DoWorkAsync(CoreWindow window)
     ApplicationView appView = ApplicationView::GetForCurrentView();
     appView.Title(L"Step 1");
 
-    // App window method
-    /*AppWindow newWindow = co_await AppWindow::TryCreateAsync();
-    Frame newWindowContentFrame{};
-    ElementCompositionPreview::SetAppWindowContent(newWindow, newWindowContentFrame);
-    newWindow.TryShowAsync();*/
-
-    // CreateView method
-    //CoreApplicationView newView = CoreApplication::CreateNewView();
-    /*co_await winrt::resume_foreground(newView.Dispatcher());
-    Frame frame{};
-    Window::Current().Activate();
-    ApplicationViewSwitcher::TryShowAsStandaloneAsync(ApplicationView::GetForCurrentView().Id());*/
-
     auto views = CoreApplication::Views();
 
     if (Window::Current() == NULL)
         OutputDebugString(L"Window::Current() is NULL\n");
 
     appView.Title(L"FOV CHANGER");
+}
+
+void OnKeyDown(CoreWindow const& sender, KeyEventArgs const& args)
+{
+
 }
 
 void GuiTest()
@@ -112,33 +104,14 @@ void GuiTest()
                 {
                     renderer->Setup(CoreApplication::MainView().CoreWindow());
                     renderer->Loop();
-                    //if (Window::Current() == NULL)
-                    //    OutputDebugString(L"DISPATCHER: Window::Current() is NULL\n");
 
-                    //if (GetActiveWindow() == NULL)
-                    //    OutputDebugString(L"DISPATCHER: OutputDebugString() is NULL\n");
-                    //else
-                    //    OutputDebugString(L"DISPATCHER: OutputDebugString() is VALID!!!!\n");
-
-
-                    //Compositor compositor{};
-                    //ContainerVisual containerVisual = compositor.CreateContainerVisual();
-                    //auto target = compositor.CreateTargetForCurrentView();
-                    //target.Root(containerVisual);
-
-                    //// Create sprite
-                    //SpriteVisual visual = compositor.CreateSpriteVisual();
-
-                    //// Set coolor
-                    //visual.Brush(compositor.CreateColorBrush({ 0xff, 0xff, 0xff, 0xff }));
-
-                    //// Size
-                    //visual.Size({ 300.0f, 300.0f });
-
-                    //// Location
-                    //visual.Offset({ 100.0f, 100.0f, 0.0f });
-
-                    //containerVisual.Children().InsertAtTop(visual);
+                    CoreWindow window = CoreApplication::MainView().CoreWindow();
+                    window.ReleasePointerCapture(); // Will make cursor free
+                    //window.KeyDown([this](IInspectable const& /* sender */, KeyEventArgs const& args)
+                    //    {
+                    //        OutputDebugString(L"PRESSED A BUTTON \n");
+                    //    });
+                    
                 }
                 catch (winrt::hresult_error const& ex)
                 {
@@ -150,18 +123,6 @@ void GuiTest()
                 }
                
          });
-
-        // Trying to create an additional view
-        /*CoreApplicationView newView = CoreApplication::CreateNewView();
-
-        newView.Dispatcher().RunAsync(CoreDispatcherPriority::Low, [&](auto&& ...)
-            {
-                Frame frame{};
-
-                Window::Current().Content() = frame;
-                Window::Current().Activate();
-
-            });*/
 
         DoWorkAsync(window);
 
@@ -209,13 +170,14 @@ DWORD WINAPI InjectedThread(HMODULE hModule)
     LOG(L"Doing ui tests!");
     GuiTest();
 
+    gameManager->m_inputListener->initGameData();
     //network->startThread();
     moduleManager->initGameData();
 
     while (true)
     {
         // END
-        if (GetAsyncKeyState(VK_END) & 1 || gameManager->c_KeyListener->END)
+        if (GetAsyncKeyState(VK_END) & 1 || gameManager->m_inputListener->m_keyMappings->END)
         {
             Application::Current().Exit();
         }

@@ -7,7 +7,7 @@ extern const std::shared_ptr<GameManager> gameManager;
 
 
 // Used at hooks to get Zoom class
-Zoom* g_RefZoom = nullptr;
+static Zoom* g_RefZoom = nullptr;
 
 
 void __fastcall hkUpCallFunc(void* param_1, uint64_t param_2, uint64_t param_3)
@@ -38,7 +38,7 @@ void __fastcall hkDownCallFunc(void* param_1, uint64_t param_2, uint64_t param_3
 
 Zoom::Zoom()
 {
-    this->m_hotkey = &(gameManager->c_KeyListener->VK_R);
+    this->m_hotkey = &(gameManager->m_inputListener->m_keyMappings->VK_V);
 }
 
 void Zoom::initGameData()
@@ -86,7 +86,7 @@ void Zoom::onStop()
 
 void Zoom::onPress()
 {
-    animation::LerpFov(fov_p, 80.0f, 19.0f, 0.3f);
+    animation::LerpFov(fov_p, 76.0f, 19.0f, 0.3f);
 
     if (MH_EnableHook((void*)hotbarUpCallFunc.m_addr) != MH_OK)
         LOG(L"Minhook: enable hook hotbarUpCallFunc failed!");
@@ -103,7 +103,7 @@ void Zoom::onRelease()
     if (MH_DisableHook((void*)hotbarDownCallFunc.m_addr) != MH_OK)
         LOG(L"Minhook: disable hook hotbarDownCallFunc failed!");
 
-    animation::LerpFov(fov_p, 19.0f, 80.0f, 0.1f);
+    animation::LerpFov(fov_p, 19.0f, 76.0f, 0.1f);
 
     wheelStep = 0;
 }

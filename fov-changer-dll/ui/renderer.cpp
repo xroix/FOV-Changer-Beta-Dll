@@ -81,10 +81,10 @@ void UI::Renderer::Loop()
 
 
     D2D1_RECT_F rectangle2 = D2D1::RectF(
-        100.0f / 2 - 100.0f,
-        100.0f / 2 - 100.0f,
-        100.0f / 2 + 100.0f,
-        100.0f / 2 + 100.0f
+        50.0f,
+        50.0f,
+        200.0f,
+        80.0f
     );
 
     // Draw a filled rectangle.

@@ -6,7 +6,7 @@ extern const std::shared_ptr<GameManager> gameManager;
 
 Freelook::Freelook()
 {
-    this->m_hotkey = &(gameManager->c_KeyListener->VK_V);
+    this->m_hotkey = &(gameManager->m_inputListener->m_keyMappings->CTRL);
 }
 
 void Freelook::initGameData()
