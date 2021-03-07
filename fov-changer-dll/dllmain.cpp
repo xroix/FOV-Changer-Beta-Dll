@@ -2,22 +2,22 @@
 
 #include "pch.h"
 
-#include "module.h"
 #include "game.h"
-#include "settings.h"
+#include "core/module.h"
+#include "core/settings.h"
 #include "utils/mem.h"
 #include "utils/proc.h"
 #include "utils/Logger.h"
 #include "network/network.h"
 #include "ui/renderer.h"
-#include "SDK/KeyListener.h"
+#include "SDK/KeyMappings.h"
 
 
 // Global core things that get "extern -ed"
-extern const std::shared_ptr<GameManager> gameManager = std::make_shared<GameManager>();
-extern const std::shared_ptr<ModuleManager> moduleManager = std::make_shared<ModuleManager>();
-//extern const std::shared_ptr<Network> network = std::make_shared<Network>();
-const std::shared_ptr<UI::Renderer> renderer = std::make_shared<UI::Renderer>();
+extern const std::shared_ptr<GameManager> gameManager =                     std::make_shared<GameManager>();
+extern const std::shared_ptr<Core::Module::ModuleManager> moduleManager =   std::make_shared<Core::Module::ModuleManager>();
+//extern const std::shared_ptr<Network> network =                           std::make_shared<Network>();
+const std::shared_ptr<UI::Main> ui =                                        std::make_shared<UI::Main>();
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@ void ShowToast(std::wstring message)
     ToastNotificationManager::CreateToastNotifier().Show(ToastNotification(toastXml));
 }
 
-#include <winrt/Windows.ApplicationModel.Core.h>;
+#include <winrt/Windows.ApplicationModel.Core.h>
 #include <winrt/Windows.UI.ViewManagement.h>
 #include <winrt/Windows.UI.Core.h>
 #include <winrt/Windows.UI.Xaml.h>
@@ -80,63 +80,6 @@ IAsyncAction DoWorkAsync(CoreWindow window)
     appView.Title(L"FOV CHANGER");
 }
 
-void OnKeyDown(CoreWindow const& sender, KeyEventArgs const& args)
-{
-
-}
-
-void GuiTest()
-{
-    try
-    {
-        CoreApplicationView view = CoreApplication::MainView();
-        CoreWindow window = view.CoreWindow();
-        CoreDispatcher dispatcher = window.Dispatcher();
-
-        winrt::agile_ref<CoreWindow> windowAgile{ view.CoreWindow() };
-
-        //std::thread t = std::thread(UI::RenderingThread, renderer, window);
-        //t.join();
-
-        dispatcher.RunAsync(CoreDispatcherPriority::Low, [&](auto && ...)
-            {
-                try
-                {
-                    renderer->Setup(CoreApplication::MainView().CoreWindow());
-                    renderer->Loop();
-
-                    CoreWindow window = CoreApplication::MainView().CoreWindow();
-                    window.ReleasePointerCapture(); // Will make cursor free
-                    //window.KeyDown([this](IInspectable const& /* sender */, KeyEventArgs const& args)
-                    //    {
-                    //        OutputDebugString(L"PRESSED A BUTTON \n");
-                    //    });
-                    
-                }
-                catch (winrt::hresult_error const& ex)
-                {
-                    winrt::hresult hr = ex.code(); // HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND).
-                    winrt::hstring message = ex.message(); // The system cannot find the file specified.
-
-                    LOG(L"ERROR 2:");
-                    LOG(message.c_str());
-                }
-               
-         });
-
-        DoWorkAsync(window);
-
-    } catch (winrt::hresult_error const& ex)
-    {
-        winrt::hresult hr = ex.code(); // HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND).
-        winrt::hstring message = ex.message(); // The system cannot find the file specified.
-
-        LOG(L"ERROR:");
-        LOG(message.c_str());
-    }
-}
-
-
 //////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -145,19 +88,16 @@ DWORD WINAPI InjectedThread(HMODULE hModule)
     LOG(L"FOV Changer Client :: Press END to exit!");
     ShowToast(L"Hello world");
 
-    OutputDebugString(L"Modulebase: ");
-    OutputDebugStringA(std::to_string(gameManager->m_moduleBase).c_str());
-    OutputDebugString(L"\n");
-
     // Init minhook
     if (MH_Initialize() != MH_OK)
         LOG(L"Minhook init failed!");
     else
         LOG(L"Minhook successfully initialized.");
 
+    ui->StartRenderThread(ui);
 
     LOG(L"Doing settings test!");
-    ModuleSettings ms({
+    Core::Settings::ModuleSettings ms({
         TEXTINPUT("display_name", "Display Name"),
         GROUP("zoom_id", "Zoom", {
             INTINPUT("fov", "FOV"),
@@ -166,9 +106,6 @@ DWORD WINAPI InjectedThread(HMODULE hModule)
         }),
         INTINPUT("test01", "Some test")
     });
-
-    LOG(L"Doing ui tests!");
-    GuiTest();
 
     gameManager->m_inputListener->initGameData();
     //network->startThread();

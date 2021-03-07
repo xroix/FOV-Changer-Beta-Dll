@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 
 #include "../pch.h"
 
@@ -38,11 +38,7 @@ public:
 
     void log(const std::string& msg)
     {
-        std::wostringstream formated_msg;
-        formated_msg << L"[" << this->getTimePrefix(L"hour minute second") << L"] " << winrt::to_hstring(msg).c_str() << L"\n";
-
-        OutputDebugString(formated_msg.str().c_str());
-        FileIO::AppendTextAsync(file, formated_msg.str()).get();
+        log(winrt::to_hstring(msg).c_str());
     }
 
     const std::wstring& getCurrentPath()
@@ -55,6 +51,7 @@ public:
         return ApplicationData::Current().LocalFolder().Path().c_str();
     }
 };
+
 const std::shared_ptr<Logger> logger = std::make_shared<Logger>();
 #define LOG(msg) logger->log(msg)
 

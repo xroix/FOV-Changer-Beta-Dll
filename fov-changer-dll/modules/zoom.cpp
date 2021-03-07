@@ -70,8 +70,8 @@ void Zoom::onStart()
     *fovMin_p = 0.0f;
     *fovMax_p = 1000.0f;
 
-    fovLowLock.activate();
-    fovMaxLock.activate();
+    fovLowLock.Activate();
+    fovMaxLock.Activate();
 }
 
 void Zoom::onStop()

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "..\pch.h"
+#include "../pch.h"
 
-#include "..\module.h"
+#include "../game.h"
+#include "../core/module.h"
 
 
 // Hooks
@@ -24,7 +25,7 @@ public:
 	PlayerHolder(const std::string& name, void* playerNamePointer);
 };
 
-class Nametag : public IModule
+class Nametag : public Core::Module::IModule
 {
 public:
 	std::string m_name = "Nametag";

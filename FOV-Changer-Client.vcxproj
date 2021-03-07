@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="fov-changer-dll\core\input.cpp" />
     <ClCompile Include="fov-changer-dll\dllmain.cpp" />
     <ClCompile Include="fov-changer-dll\game.cpp" />
     <ClCompile Include="fov-changer-dll\modules\freelook.cpp" />
@@ -27,32 +28,35 @@
     <ClCompile Include="fov-changer-dll\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="fov-changer-dll\settings.cpp" />
+    <ClCompile Include="fov-changer-dll\core\settings.cpp" />
     <ClCompile Include="fov-changer-dll\ui\common\DeviceResources.cpp" />
+    <ClCompile Include="fov-changer-dll\ui\main.cpp" />
     <ClCompile Include="fov-changer-dll\ui\renderer.cpp" />
     <ClCompile Include="fov-changer-dll\utils\animation.cpp" />
     <ClCompile Include="fov-changer-dll\utils\mem.cpp" />
-    <ClCompile Include="fov-changer-dll\module.cpp" />
+    <ClCompile Include="fov-changer-dll\core\module.cpp" />
     <ClCompile Include="fov-changer-dll\modules\zoom.cpp" />
     <ClCompile Include="fov-changer-dll\utils\proc.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fov-changer-dll\core\input.h" />
     <ClInclude Include="fov-changer-dll\game.h" />
     <ClInclude Include="fov-changer-dll\modules\freelook.h" />
     <ClInclude Include="fov-changer-dll\modules\nametag.h" />
     <ClInclude Include="fov-changer-dll\network\network.h" />
-    <ClInclude Include="fov-changer-dll\settings.h" />
+    <ClInclude Include="fov-changer-dll\core\settings.h" />
     <ClInclude Include="fov-changer-dll\ui\common\DeviceResources.h" />
     <ClInclude Include="fov-changer-dll\ui\common\DirectXHelper.h" />
+    <ClInclude Include="fov-changer-dll\ui\main.h" />
     <ClInclude Include="fov-changer-dll\ui\renderer.h" />
     <ClInclude Include="fov-changer-dll\utils\animation.h" />
     <ClInclude Include="fov-changer-dll\utils\Logger.h" />
     <ClInclude Include="fov-changer-dll\utils\mem.h" />
-    <ClInclude Include="fov-changer-dll\module.h" />
+    <ClInclude Include="fov-changer-dll\core\module.h" />
     <ClInclude Include="fov-changer-dll\modules\zoom.h" />
     <ClInclude Include="fov-changer-dll\pch.h" />
     <ClInclude Include="fov-changer-dll\utils\proc.h" />
-    <ClInclude Include="fov-changer-dll\SDK\KeyListener.h" />
+    <ClInclude Include="fov-changer-dll\SDK\KeyMappings.h" />
     <ClInclude Include="include\cppzmq\zmq.hpp" />
     <ClInclude Include="include\MinHook.h" />
     <ClInclude Include="include\nlohmann\json.hpp" />

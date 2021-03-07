@@ -30,8 +30,8 @@ void Freelook::onPress()
     // Set it and make possible, that it goes from 2 perspective
     *currentPerspective_p = 1 + 1 * (lastPerspective == 2);
 
-    freelookHead.activate();
-    freelookBody.activate();
+    freelookHead.Activate();
+    freelookBody.Activate();
 }
 
 void Freelook::onRelease()
@@ -44,6 +44,6 @@ void Freelook::onRelease()
 
     *currentPerspective_p = lastPerspective;
 
-    freelookHead.deactivate();
-    freelookBody.deactivate();
+    freelookHead.Deactivate();
+    freelookBody.Deactivate();
 }

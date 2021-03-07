@@ -18,9 +18,6 @@
     <ClCompile Include="fov-changer-dll\dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fov-changer-dll\module.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fov-changer-dll\modules\zoom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,9 +42,6 @@
     <ClCompile Include="fov-changer-dll\modules\nametag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fov-changer-dll\settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="fov-changer-dll\ui\renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,15 +54,21 @@
     <ClCompile Include="fov-changer-dll\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="fov-changer-dll\core\settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fov-changer-dll\core\module.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fov-changer-dll\core\input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fov-changer-dll\ui\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fov-changer-dll\pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fov-changer-dll\SDK\KeyListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fov-changer-dll\module.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="fov-changer-dll\modules\zoom.h">
@@ -113,9 +113,6 @@
     <ClInclude Include="fov-changer-dll\utils\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fov-changer-dll\settings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="fov-changer-dll\ui\renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -123,6 +120,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="fov-changer-dll\ui\common\DirectXHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fov-changer-dll\core\settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fov-changer-dll\core\module.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fov-changer-dll\SDK\KeyMappings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fov-changer-dll\core\input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fov-changer-dll\ui\main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
