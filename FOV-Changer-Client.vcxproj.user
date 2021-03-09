@@ -19,7 +19,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommand>C:\Program Files\WindowsApps\Microsoft.MinecraftUWP_1.16.20102.0_x64__8wekyb3d8bbwe\Minecraft.Windows.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommand>C:\Program Files\WindowsApps\Microsoft.MinecraftUWP_1.16.21005.0_x64__8wekyb3d8bbwe\Minecraft.Windows.exe</LocalDebuggerCommand>
     <LocalDebuggerAttach>true</LocalDebuggerAttach>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>

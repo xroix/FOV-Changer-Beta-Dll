@@ -18,8 +18,8 @@ public:
 	float* fovMax_p =					 nullptr;
 
 	// Aob
-	Core::Signature fovLowLock =		 Core::Signature("F3 0F 5F 35 85 5F CC 01", 8, "\xF3\x0F\x5F\x35\x0F\x70\x93\x01");
-	Core::Signature fovMaxLock =		 Core::Signature("F3 0F 5D 35 9D 60 CC 01", 8, "\xF3\x0F\x5F\x35\x27\x71\x93\x01");
+	Core::Signature fovLowLock =		 Core::Signature("F3 0F 5F 35 49 D5 EB 01", 8, "\xF3\x0F\x5F\x35\x49\xD5\xEB\x01");
+	Core::Signature fovMaxLock =		 Core::Signature("F3 0F 5D 35 61 D6 EB 01", 8, "\xF3\x0F\x5D\x35\x61\xD6\xEB\x01");
 
 	// Functions that call a function, that changes the hotbar
 	// User for getting scrollwheel input while blocking the hotbar 

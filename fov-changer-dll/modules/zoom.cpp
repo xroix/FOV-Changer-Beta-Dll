@@ -46,9 +46,9 @@ void Zoom::initGameData()
     // Set reference for hooks
     g_RefZoom = this;
 
-    fov_p    = (float*)mem::FindDMAAddy(gameManager->m_moduleBase + 0x0369BD40, { 0x20, 0x120, 0x1E8 });
-    fovMin_p = (float*)mem::FindDMAAddy(gameManager->m_moduleBase + 0x0369BD40, { 0x20, 0x120, 0x1e0 });
-    fovMax_p = (float*)mem::FindDMAAddy(gameManager->m_moduleBase + 0x0369BD40, { 0x20, 0x120, 0x1e4 });
+    fov_p    = (float*)mem::FindDMAAddy(gameManager->m_moduleBase + 0x037CB468, { 0x28, 0x130, 0x18 });
+    fovMin_p = (float*)mem::FindDMAAddy(gameManager->m_moduleBase + 0x037CB468, { 0x28, 0x130, 0x10 });
+    fovMax_p = (float*)mem::FindDMAAddy(gameManager->m_moduleBase + 0x037CB468, { 0x28, 0x130, 0x14 });
 
     fovLowLock.initGameData();
     fovMaxLock.initGameData();

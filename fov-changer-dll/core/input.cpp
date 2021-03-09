@@ -71,7 +71,7 @@ namespace Core::Input
 {
     InputListener::InputListener(uintptr_t moduleBase)
         : m_moduleBase(moduleBase),
-        m_keyMappings((KeyMappings*)(moduleBase + 0x036529B0))
+        m_keyMappings((KeyMappings*)(moduleBase + 0x3786020))
     {
     }
 
@@ -79,20 +79,20 @@ namespace Core::Input
     {
         g_refInputListener = this;
 
-        m_pointerCapture_p = (byte*)mem::FindDMAAddy(m_moduleBase + 0x03A27CF8, { 0, 0x18, 0, 0x110, 0x2E0, 0x8, 0x48 + 2 });
+        m_pointerCapture_p = (byte*)mem::FindDMAAddy(m_moduleBase + 0x37D3290, { 0x8, 0x68, 0x2F0 });
 
         // Register hooks
-        if (MH_CreateHook((void*)(m_moduleBase + 0x262e590), &hkMouse, reinterpret_cast<LPVOID*>(&m_mouseTrampoline)) != MH_OK)
+        if (MH_CreateHook((void*)(m_moduleBase + 0x2364350), &hkMouse, reinterpret_cast<LPVOID*>(&m_mouseTrampoline)) != MH_OK)
             LOG(L"Minhook: create hook InputListerner: hkMouse failed!");
 
-        if (MH_CreateHook((void*)(m_moduleBase + 0x4e1a40), &hkKeyboard, reinterpret_cast<LPVOID*>(&m_keyboardTrampoline)) != MH_OK)
+        if (MH_CreateHook((void*)(m_moduleBase + 0x529F90), &hkKeyboard, reinterpret_cast<LPVOID*>(&m_keyboardTrampoline)) != MH_OK)
             LOG(L"Minhook: create hook InputListerner: hkKeyboard failed!");
 
         // Enable Hooks
-        if (MH_EnableHook((void*)(m_moduleBase + 0x262e590)) != MH_OK)
+        if (MH_EnableHook((void*)(m_moduleBase + 0x2364350)) != MH_OK)
             LOG(L"Minhook: enable hook InputListerner: hkMouse failed!");
 
-        if (MH_EnableHook((void*)(m_moduleBase + 0x4e1a40)) != MH_OK)
+        if (MH_EnableHook((void*)(m_moduleBase + 0x529F90)) != MH_OK)
             LOG(L"Minhook: enable hook InputListerner: hkKeyboard failed!");
     }
 

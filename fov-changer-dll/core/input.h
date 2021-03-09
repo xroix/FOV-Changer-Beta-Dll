@@ -38,8 +38,9 @@ namespace Core::Input
 
 
 // Controlling function:
-// 00eee140
+// Minecraft.Windows.exe+E49EE0 
 // Called for mouse input based stuff:
-// 0262e590
+// Minecraft.Windows.exe+2364350
 // Called for keyboard related stuff:
-// 004e1a40
+// Minecraft.Windows.exe+529F90 
+

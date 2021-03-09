@@ -23,13 +23,16 @@ namespace UI
 		Renderer();
 
 		void CreateDeviceDependentResources();
+		void CreateDeviceIndependentResources();
 		void Render();
 
 	public:
 		winrt::agile_ref<CoreWindow>			m_window;
 		std::shared_ptr<DX::DeviceResources>	m_deviceResources;
+		bool									m_visible = true;
 
-		winrt::com_ptr<ID2D1SolidColorBrush>	m_textBrush;
+		winrt::com_ptr<ID2D1SolidColorBrush>	m_whiteBrush;
+		winrt::com_ptr<ID2D1SolidColorBrush>	m_blackBrush;
 		winrt::com_ptr<IDWriteTextLayout>		m_dwriteTextLayout;
 		winrt::com_ptr<IDWriteTextFormat>		m_dwriteTextFormat;
 	};

@@ -11,7 +11,7 @@ Freelook::Freelook()
 
 void Freelook::initGameData()
 {
-    currentPerspective_p = (int*)mem::FindDMAAddy(gameManager->m_moduleBase + 0x0369BD40, { 0x28, 0x30, 0x1E8 });
+    currentPerspective_p = (int*)mem::FindDMAAddy(gameManager->m_moduleBase + 0x037CB460, { 0x18, 0x30, 0x18 });
     lastPerspective = *currentPerspective_p;
 
     freelookHead.initGameData();
