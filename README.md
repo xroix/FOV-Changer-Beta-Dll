@@ -1,6 +1,7 @@
 # FOV-Changer-DLL-Beta
  May rebrand, only for backup
- Is not updated and consequently does not work with the newest mc version!
+ <br>
+ Is **not updated** and consequently does not work with the newest mc version!
 
 ## Disclaimer
 This project is currently dead and inactive. Perhaps I will work on it again in the future.
