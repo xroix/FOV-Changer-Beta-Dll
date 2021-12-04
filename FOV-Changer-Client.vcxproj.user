@@ -4,22 +4,22 @@
     <ShowAllFiles>true</ShowAllFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerCommand>C:\Users\xroix\Desktop\MCLauncher\Minecraft-1.16.40.2\Minecraft.Windows.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommand>Z:\User\Desktop\MCLauncher\Minecraft-1.17.10.4\Minecraft.Windows.exe</LocalDebuggerCommand>
     <LocalDebuggerAttach>true</LocalDebuggerAttach>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerCommand>C:\Program Files\WindowsApps\Microsoft.MinecraftUWP_1.16.20102.0_x64__8wekyb3d8bbwe\Minecraft.Windows.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommand>Z:\User\Desktop\MCLauncher\Minecraft-1.17.10.4\Minecraft.Windows.exe</LocalDebuggerCommand>
     <LocalDebuggerAttach>true</LocalDebuggerAttach>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommand>C:\Users\xroix\Desktop\MCLauncher\Minecraft-1.16.40.2\Minecraft.Windows.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommand>Z:\User\Desktop\MCLauncher\Minecraft-1.17.10.4\Minecraft.Windows.exe</LocalDebuggerCommand>
     <LocalDebuggerAttach>true</LocalDebuggerAttach>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommand>C:\Program Files\WindowsApps\Microsoft.MinecraftUWP_1.16.21005.0_x64__8wekyb3d8bbwe\Minecraft.Windows.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommand>Z:\User\Desktop\MCLauncher\Minecraft-1.17.11.1\Minecraft.Windows.exe</LocalDebuggerCommand>
     <LocalDebuggerAttach>true</LocalDebuggerAttach>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>

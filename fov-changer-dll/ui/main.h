@@ -17,18 +17,30 @@ namespace UI
 	class Main
 	{
 	public:
-		Main();
+		winrt::agile_ref<CoreWindow>		m_window;
+		CoreDispatcher						m_dispatcher = nullptr;
 
-		void StartRenderThread(std::shared_ptr<UI::Main> ui);
+		std::thread							m_renderThread;
+		std::shared_ptr<UI::Renderer>		m_renderer = nullptr;
+		bool								m_visible = true;
+
+	public:
+		Main(const Main& other) = delete;
+		static Main& Get() { static Main instance; return instance; }
+
+		void StartRenderThread();
 		void SetWindow(winrt::agile_ref<CoreWindow> window);
 		void Loop();
 
-		void OnVisibilityChanged(CoreWindow const&, VisibilityChangedEventArgs const& args);
+		// Run things as real native UI
+		void InvokeAsUIThread(DispatchedHandler const& agileCallback);
+		void InvokeAsUIThreadAsync(DispatchedHandler const& agileCallback);
 
-	public:
-		winrt::agile_ref<CoreWindow>			m_window;
-		std::thread								m_renderThread;
-		std::shared_ptr<UI::Renderer>			m_renderer = nullptr;
-		bool									m_visible = true;
+		// Events
+		void OnVisibilityChanged(IInspectable const&, VisibilityChangedEventArgs const& args);
+		void OnSizeChanged(IInspectable const&, WindowSizeChangedEventArgs const& args);
+
+	private:
+		Main();
 	};
 }

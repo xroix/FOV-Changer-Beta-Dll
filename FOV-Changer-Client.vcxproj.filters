@@ -27,7 +27,7 @@
     <ClCompile Include="fov-changer-dll\utils\proc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fov-changer-dll\game.cpp">
+    <ClCompile Include="fov-changer-dll\client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fov-changer-dll\utils\animation.cpp">
@@ -37,9 +37,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fov-changer-dll\network\network.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fov-changer-dll\modules\nametag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fov-changer-dll\ui\renderer.cpp">
@@ -66,6 +63,9 @@
     <ClCompile Include="fov-changer-dll\ui\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="fov-changer-dll\modules\test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fov-changer-dll\pch.h">
@@ -80,7 +80,7 @@
     <ClInclude Include="fov-changer-dll\utils\proc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fov-changer-dll\game.h">
+    <ClInclude Include="fov-changer-dll\client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="fov-changer-dll\utils\animation.h">
@@ -96,18 +96,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\MinHook.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fov-changer-dll\modules\nametag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zmq_utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zmq.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\cppzmq\zmq.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="fov-changer-dll\utils\Logger.h">
@@ -137,6 +125,9 @@
     <ClInclude Include="fov-changer-dll\ui\main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="fov-changer-dll\modules\test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="lib\MINHOOK_LICENSE.txt" />
@@ -144,7 +135,6 @@
   <ItemGroup>
     <Library Include="lib\libMinHook.x64.lib" />
     <Library Include="lib\libMinHook.x86.lib" />
-    <Library Include="lib\libzmq-mt-s-4_3_3.lib" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="fov-changer-dll\ui\DeviceResources.xaml" />

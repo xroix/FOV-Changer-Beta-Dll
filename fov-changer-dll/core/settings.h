@@ -8,7 +8,7 @@
 using json = nlohmann::json;
 
 
-namespace Core::Settings
+namespace Settings
 {
 	enum class OptionT : int
 	{
@@ -84,9 +84,9 @@ namespace Core::Settings
 		return options;
 	}
 
-	#define GROUP(id, label, ...) {label, std::make_shared<Core::Settings::Group>(id, label, Core::Settings::_wrapper(__VA_ARGS__))}
-	#define TEXTINPUT(id, label) {label, std::make_shared<Core::Settings::TextInput>(id, label)}
-	#define INTINPUT(id, label) {label, std::make_shared<Core::Settings::IntInput>(id, label)}
+	#define GROUP(id, label, ...) {label, std::make_shared<Settings::Group>(id, label, Settings::_wrapper(__VA_ARGS__))}
+	#define TEXTINPUT(id, label) {label, std::make_shared<Settings::TextInput>(id, label)}
+	#define INTINPUT(id, label) {label, std::make_shared<Settings::IntInput>(id, label)}
 
 
 	class ModuleSettings

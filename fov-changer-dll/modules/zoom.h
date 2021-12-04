@@ -2,12 +2,12 @@
 
 #include "../pch.h"
 
-#include "../game.h"
+#include "../client.h"
 #include "../core/module.h"
 #include "../utils/animation.h"
 
 
-class Zoom : public Core::Module::IModule
+class Zoom : public Module::IModule
 {
 public:
 	std::string m_name =				 "Zoom";
@@ -18,13 +18,13 @@ public:
 	float* fovMax_p =					 nullptr;
 
 	// Aob
-	Core::Signature fovLowLock =		 Core::Signature("F3 0F 5F 35 49 D5 EB 01", 8, "\xF3\x0F\x5F\x35\x49\xD5\xEB\x01");
-	Core::Signature fovMaxLock =		 Core::Signature("F3 0F 5D 35 61 D6 EB 01", 8, "\xF3\x0F\x5D\x35\x61\xD6\xEB\x01");
+	Signature fovLowLock =		 Signature("F3 0F 5F 35 49 D5 EB 01", 8, "\xF3\x0F\x5F\x35\x49\xD5\xEB\x01");
+	Signature fovMaxLock =		 Signature("F3 0F 5D 35 61 D6 EB 01", 8, "\xF3\x0F\x5D\x35\x61\xD6\xEB\x01");
 
 	// Functions that call a function, that changes the hotbar
 	// User for getting scrollwheel input while blocking the hotbar 
-	Core::Signature hotbarUpCallFunc =	 Core::Signature("40 53 48 83 EC 20 48 8B 59 08 83 BB 7C 0A 00 00 01");
-	Core::Signature hotbarDownCallFunc = Core::Signature("40 53 48 83 EC 20 48 8B 19 83 BB 7C 0A 00 00 01");
+	Signature hotbarUpCallFunc =	 Signature("40 53 48 83 EC 20 48 8B 59 08 83 BB 7C 0A 00 00 01");
+	Signature hotbarDownCallFunc = Signature("40 53 48 83 EC 20 48 8B 19 83 BB 7C 0A 00 00 01");
 
 	// For scroll wheel mechanic
 	int wheelStep =						 0;

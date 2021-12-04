@@ -1,17 +1,15 @@
 #include "..\pch.h"
 #include "freelook.h"
 
-extern const std::shared_ptr<GameManager> gameManager;
-
 
 Freelook::Freelook()
 {
-    this->m_hotkey = &(gameManager->m_inputListener->m_keyMappings->CTRL);
+    this->m_hotkey = &(Client::GetInputListener().m_keyMappings->CTRL);
 }
 
 void Freelook::initGameData()
 {
-    currentPerspective_p = (int*)mem::FindDMAAddy(gameManager->m_moduleBase + 0x037CB460, { 0x18, 0x30, 0x18 });
+    currentPerspective_p = (int*)mem::FindDMAAddy(Client::Get().m_moduleBase + 0x037CB460, { 0x18, 0x30, 0x18 });
     lastPerspective = *currentPerspective_p;
 
     freelookHead.initGameData();

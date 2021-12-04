@@ -12,6 +12,7 @@ namespace mem
 	void PatchEx(BYTE* dst, BYTE* src, unsigned int size, HANDLE hProcess);
 	void Nop(BYTE* dst, unsigned int size);
 	void NopEx(BYTE* dst, unsigned int size, HANDLE hProcess);
+	bool ValidMemory(uintptr_t addr);
 	// Multilevel pointers
 	uintptr_t FindDMAAddy(uintptr_t ptr, std::vector<unsigned int> offsets);
 	// Signature-Pattern scanning

@@ -46,6 +46,7 @@
 
 #include <d3d11_3.h>
 #include <d2d1_3.h>
+#include <d2d1effects_2.h>
 #include <dwrite_3.h>
 #include <wincodec.h>
 
@@ -73,5 +74,6 @@
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "Iphlpapi.lib")
+#pragma comment(lib, "dxguid.lib")  // for d2d1effects
 
 #endif //PCH_H

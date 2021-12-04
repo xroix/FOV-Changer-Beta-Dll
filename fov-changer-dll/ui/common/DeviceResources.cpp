@@ -9,6 +9,9 @@
 // 
 //*********************************************************
 
+// Useful info: https://docs.microsoft.com/en-us/windows/win32/direct2d/devices-and-device-contexts
+// Structure of UWP Apps: https://medium.com/@walterlv/uwp-coreapplication-application-vs-coreapplicationview-applicationview-vs-corewindow-window-bc9d72da6745
+
 #include "../../pch.h"
 #include "DeviceResources.h"
 #include "DirectXHelper.h"
@@ -77,11 +80,6 @@ void DX::DeviceResources::CreateDeviceIndependentResources()
     D2D1_FACTORY_OPTIONS options;
     ZeroMemory(&options, sizeof(D2D1_FACTORY_OPTIONS));
 
-#if defined(_DEBUG)
-    // If the project is in a debug build, enable Direct2D debugging via SDK Layers.
-    options.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
-#endif
-
     // Initialize the Direct2D Factory.
     winrt::check_hresult(
         D2D1CreateFactory(
@@ -112,14 +110,6 @@ void DX::DeviceResources::CreateDeviceResources()
     // than the API default. It is required for compatibility with Direct2D.
     UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
-#if defined(_DEBUG)
-    if (DX::SdkLayersAvailable())
-    {
-        // If the project is in a debug build, enable debugging via SDK Layers with this flag.
-        creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
-    }
-#endif
-
     // This array defines the set of DirectX hardware feature levels this app will support.
     // Note the ordering should be preserved.
     // Don't forget to declare your application's minimum required feature level in its
@@ -136,7 +126,7 @@ void DX::DeviceResources::CreateDeviceResources()
     };
 
     // Create the Direct3D 11 API device object and a corresponding context.
-    winrt::com_ptr<ID3D11Device> device;
+    winrt::com_ptr<ID3D11Device>        device;
     winrt::com_ptr<ID3D11DeviceContext> context;
 
     HRESULT hr = D3D11CreateDevice(
@@ -152,6 +142,7 @@ void DX::DeviceResources::CreateDeviceResources()
         context.put()                    // Returns the device immediate context.
     );
 
+    // Some warp stuff, idk what it does
     if (FAILED(hr))
     {
         // If the initialization fails, fall back to the WARP device.
@@ -174,9 +165,8 @@ void DX::DeviceResources::CreateDeviceResources()
     }
 
     // Store pointers to the Direct3D 11.1 API device and immediate context.
-    m_d3dDevice = device.as<ID3D11Device3>();
-
-    m_d3dContext = context.as<ID3D11DeviceContext3>();
+    m_d3dDevice =   device.as<ID3D11Device3>();
+    m_d3dContext =  context.as<ID3D11DeviceContext3>();
 
     // Create the Direct2D device object and a corresponding context.
     winrt::com_ptr<IDXGIDevice3> dxgiDevice;
@@ -201,10 +191,8 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
     ID3D11RenderTargetView* nullViews[] = { nullptr };
     m_d3dContext->OMSetRenderTargets(ARRAYSIZE(nullViews), nullViews, nullptr);
     m_d3dRenderTargetView = nullptr;
-    m_d3dRenderTargetViewRight = nullptr;
     m_d2dContext->SetTarget(nullptr);
     m_d2dTargetBitmap = nullptr;
-    m_d2dTargetBitmapRight = nullptr;
     m_d3dDepthStencilView = nullptr;
     m_d3dContext->Flush();
 
@@ -225,15 +213,15 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
     m_d3dRenderTargetSize.Width = swapDimensions ? m_outputSize.Height : m_outputSize.Width;
     m_d3dRenderTargetSize.Height = swapDimensions ? m_outputSize.Width : m_outputSize.Height;
 
-    if (m_swapChain != nullptr)
+    if (m_swapChain != nullptr && false) // TODO: why did I add && false, again?
     {
         // If the swap chain already exists, resize it.
         HRESULT hr = m_swapChain->ResizeBuffers(
-            2, // Double-buffered swap chain.
+            2, // double-buffered
             static_cast<UINT>(m_d3dRenderTargetSize.Width),
             static_cast<UINT>(m_d3dRenderTargetSize.Height),
             DXGI_FORMAT_B8G8R8A8_UNORM,
-            0
+            DXGI_SWAP_CHAIN_FLAG_FOREGROUND_LAYER
         );
 
         if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
@@ -248,23 +236,22 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
         {
             winrt::check_hresult(hr);
         }
+
     } else
     {
-        CheckStereoEnabledStatus();
-
         // Otherwise, create a new one using the same adapter as the existing Direct3D device.
         DXGI_SWAP_CHAIN_DESC1 swapChainDesc = { 0 };
 
-        swapChainDesc.Width = static_cast<UINT>(m_d3dRenderTargetSize.Width); // Match the size of the window.
-        swapChainDesc.Height = static_cast<UINT>(m_d3dRenderTargetSize.Height);
+        swapChainDesc.Width = 0;  // static_cast<UINT>(m_d3dRenderTargetSize.Width); // Match the size of the window.
+        swapChainDesc.Height = 0; // static_cast<UINT>(m_d3dRenderTargetSize.Height);
         swapChainDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM; // This is the most common swap chain format.
-        swapChainDesc.Stereo = m_stereoEnabled;
+        swapChainDesc.Stereo = false;
         swapChainDesc.SampleDesc.Count = 1; // Don't use multi-sampling.
         swapChainDesc.SampleDesc.Quality = 0;
         swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         swapChainDesc.BufferCount = 2; // Use double-buffering to minimize latency.
         swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL; // All Windows Store apps must use this SwapEffect.
-        swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_FOREGROUND_LAYER;
+        swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_FOREGROUND_LAYER;  // Important!
         swapChainDesc.Scaling = DXGI_SCALING_NONE;
         swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_PREMULTIPLIED;
 
@@ -352,27 +339,6 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
         )
     );
 
-    // Stereo swapchains have an arrayed resource, so create a second Render Target
-    // for the right eye buffer.
-    if (m_stereoEnabled)
-    {
-        CD3D11_RENDER_TARGET_VIEW_DESC renderTargetViewRightDesc(
-            D3D11_RTV_DIMENSION_TEXTURE2DARRAY,
-            DXGI_FORMAT_B8G8R8A8_UNORM,
-            0,
-            1,
-            1
-        );
-
-        winrt::check_hresult(
-            m_d3dDevice->CreateRenderTargetView(
-                backBuffer.get(),
-                &renderTargetViewRightDesc,
-                m_d3dRenderTargetViewRight.put()
-            )
-        );
-    }
-
     // Create a depth stencil view for use with 3D rendering if needed.
     CD3D11_TEXTURE2D_DESC depthStencilDesc(
         DXGI_FORMAT_D24_UNORM_S8_UINT,
@@ -437,22 +403,6 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
         )
     );
 
-    // Stereo swapchains have an arrayed resource, so create a second Target Bitmap
-    // for the right eye buffer.
-    if (m_stereoEnabled)
-    {
-        winrt::check_hresult(
-            dxgiBackBuffer->CreateSubresourceSurface(1, dxgiSurface.put())
-        );
-        winrt::check_hresult(
-            m_d2dContext->CreateBitmapFromDxgiSurface(
-                dxgiSurface.get(),
-                &bitmapProperties,
-                m_d2dTargetBitmapRight.put()
-            )
-        );
-    }
-
     m_d2dContext->SetTarget(m_d2dTargetBitmap.get());
 
     // Grayscale text anti-aliasing is recommended for all Windows Store apps.
@@ -480,7 +430,8 @@ void DX::DeviceResources::SetLogicalSize(winrt::Windows::Foundation::Size logica
     if (m_logicalSize != logicalSize)
     {
         m_logicalSize = logicalSize;
-        CreateWindowSizeDependentResources();
+        // TODO: For now this is the best solution because we set the size to 0
+        //CreateWindowSizeDependentResources();
     }
 }
 
@@ -575,11 +526,9 @@ void DX::DeviceResources::HandleDeviceLost()
     m_d3dContext->OMSetRenderTargets(0, nullptr, nullptr);
     m_d3dDepthStencilView = nullptr;
     m_d3dRenderTargetView = nullptr;
-    m_d3dRenderTargetViewRight = nullptr;
 
     m_d2dContext->SetTarget(nullptr);
     m_d2dTargetBitmap = nullptr;
-    m_d2dTargetBitmapRight = nullptr;
     m_d2dContext = nullptr;
     m_d2dDevice = nullptr;
 
@@ -691,39 +640,4 @@ DXGI_MODE_ROTATION DX::DeviceResources::ComputeDisplayRotation()
         break;
     }
     return rotation;
-}
-
-void DX::DeviceResources::UpdateStereoState()
-{
-    bool previousStereoState = m_stereoEnabled;
-    CheckStereoEnabledStatus();
-    if (previousStereoState != m_stereoEnabled)
-    {
-        // Swap chain needs to be recreated so release the existing one.
-        // The rest of the dependent resources with be released in CreateWindowSizeDependentResources.
-        m_swapChain = nullptr;
-        CreateWindowSizeDependentResources();
-    }
-
-}
-
-void DX::DeviceResources::CheckStereoEnabledStatus()
-{
-    // first, retrieve the underlying DXGI Device from the D3D Device
-    winrt::com_ptr<IDXGIDevice1> dxgiDevice;
-    dxgiDevice = m_d3dDevice.as<IDXGIDevice1>();
-
-    // next, get the associated adapter from the DXGI Device
-    winrt::com_ptr<IDXGIAdapter> dxgiAdapter;
-    winrt::check_hresult(
-        dxgiDevice->GetAdapter(dxgiAdapter.put())
-    );
-
-    // next, get the parent factory from the DXGI adapter
-    winrt::com_ptr<IDXGIFactory2> dxgiFactory;
-    winrt::check_hresult(
-        dxgiAdapter->GetParent(IID_PPV_ARGS(dxgiFactory.put()))
-    );
-
-    m_stereoEnabled = dxgiFactory->IsWindowedStereoEnabled() ? true : false;
 }

@@ -58,43 +58,43 @@
 //	std::cout << "Network Thread closed" << std::endl;
 //}
 
-void NetworkThread(Network* network)
-{
-    /*printf("Connecting to hello world server…\n");
-    void* context = zmq_ctx_new();
-    void* requester = zmq_socket(context, ZMQ_REQ);
-    zmq_connect(requester, "tcp://localhost:1325");
-
-    printf("Connected\n");
-
-    char buffer[10];
-    printf("Sending Hello");
-    zmq_send(requester, "Hello", 5, 0);
-    zmq_recv(requester, buffer, 10, 0);
-    printf("Received World");
- 
-    zmq_close(requester);
-    zmq_ctx_destroy(context);*/
-    zmq::context_t ctx;
-    zmq::socket_t sock(ctx, zmq::socket_type::rep);
-    sock.bind("tcp://127.0.0.1:4234");
-
-    while (true)
-    {
-        std::cout << "Hello, why isn't this working?" << std::endl;
-        zmq::message_t msg;
-        const auto ret = sock.recv(msg, zmq::recv_flags::none);
-
-        std::cout << "Got " << msg << std::endl;
-
-        sock.send(zmq::str_buffer("Hello, world"), zmq::send_flags::none);
-    }
-    
-}
+//void NetworkThread(Network* network)
+//{
+//    /*printf("Connecting to hello world server…\n");
+//    void* context = zmq_ctx_new();
+//    void* requester = zmq_socket(context, ZMQ_REQ);
+//    zmq_connect(requester, "tcp://localhost:1325");
+//
+//    printf("Connected\n");
+//
+//    char buffer[10];
+//    printf("Sending Hello");
+//    zmq_send(requester, "Hello", 5, 0);
+//    zmq_recv(requester, buffer, 10, 0);
+//    printf("Received World");
+// 
+//    zmq_close(requester);
+//    zmq_ctx_destroy(context);*/
+//    zmq::context_t ctx;
+//    zmq::socket_t sock(ctx, zmq::socket_type::rep);
+//    sock.bind("tcp://127.0.0.1:4234");
+//
+//    while (true)
+//    {
+//        std::cout << "Hello, why isn't this working?" << std::endl;
+//        zmq::message_t msg;
+//        const auto ret = sock.recv(msg, zmq::recv_flags::none);
+//
+//        std::cout << "Got " << msg << std::endl;
+//
+//        sock.send(zmq::str_buffer("Hello, world"), zmq::send_flags::none);
+//    }
+//    
+//}
 
 bool Network::startThread()
 {
-	networkThread = std::thread(NetworkThread, this);
+	//networkThread = std::thread(NetworkThread, this);
 	return true;
 }
 

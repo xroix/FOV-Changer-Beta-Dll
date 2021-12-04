@@ -41,17 +41,38 @@ void mem::NopEx(BYTE* dst, unsigned int size, HANDLE hProcess)
 	delete[] nopArray;
 }
 
+bool mem::ValidMemory(uintptr_t addr)
+{
+	MEMORY_BASIC_INFORMATION info{};
+	VirtualQuery((void*)addr, &info, sizeof(info));
+	
+	if (info.Protect != PAGE_READWRITE)
+		return false;
+
+	return true;
+}
+
 uintptr_t mem::FindDMAAddy(uintptr_t ptr, std::vector<unsigned int> offsets)
 {
 	uintptr_t addr = ptr;
 	for (unsigned int i = 0; i < offsets.size(); ++i)
 	{
+		// Check if addr is valid
+		if (!ValidMemory(addr))
+		{
+			throw "Invalid pointer.";  // Todo: proper exception
+		}
+
 		addr = *(uintptr_t*)addr;
 		addr += offsets[i];
 	}
 	return addr;
 }
 
+/*
+ * Thanks you horion (https://github.com/horionclient/Horion/tree/master/Horion)
+ * Some day I will make my own ... maybe
+ */
 #define INRANGE(x, a, b) (x >= a && x <= b)
 #define GET_BYTE(x) (GET_BITS(x[0]) << 4 | GET_BITS(x[1]))
 #define GET_BITS(x) (INRANGE((x & (~0x20)), 'A', 'F') ? ((x & (~0x20)) - 'A' + 0xa) : (INRANGE(x, '0', '9') ? x - '0' : 0))

@@ -3,9 +3,6 @@
 #include "zoom.h"
 
 
-extern const std::shared_ptr<GameManager> gameManager;
-
-
 // Used at hooks to get Zoom class
 static Zoom* g_RefZoom = nullptr;
 
@@ -38,7 +35,7 @@ void __fastcall hkDownCallFunc(void* param_1, uint64_t param_2, uint64_t param_3
 
 Zoom::Zoom()
 {
-    this->m_hotkey = &(gameManager->m_inputListener->m_keyMappings->VK_V);
+    this->m_hotkey = &(Client::GetInputListener().m_keyMappings->VK_V);
 }
 
 void Zoom::initGameData()
@@ -46,9 +43,9 @@ void Zoom::initGameData()
     // Set reference for hooks
     g_RefZoom = this;
 
-    fov_p    = (float*)mem::FindDMAAddy(gameManager->m_moduleBase + 0x037CB468, { 0x28, 0x130, 0x18 });
-    fovMin_p = (float*)mem::FindDMAAddy(gameManager->m_moduleBase + 0x037CB468, { 0x28, 0x130, 0x10 });
-    fovMax_p = (float*)mem::FindDMAAddy(gameManager->m_moduleBase + 0x037CB468, { 0x28, 0x130, 0x14 });
+    fov_p    = (float*)mem::FindDMAAddy(Client::Get().m_moduleBase + 0x037CB468, { 0x28, 0x130, 0x18 });
+    fovMin_p = (float*)mem::FindDMAAddy(Client::Get().m_moduleBase + 0x037CB468, { 0x28, 0x130, 0x10 });
+    fovMax_p = (float*)mem::FindDMAAddy(Client::Get().m_moduleBase + 0x037CB468, { 0x28, 0x130, 0x14 });
 
     fovLowLock.initGameData();
     fovMaxLock.initGameData();

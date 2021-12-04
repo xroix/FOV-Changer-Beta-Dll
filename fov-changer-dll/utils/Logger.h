@@ -10,13 +10,13 @@ using namespace winrt::Windows::Globalization::DateTimeFormatting;
 class Logger
 {
 public:
-    std::wstring fileName = L"FOV-Changer-Logs.txt";
-    StorageFile file = nullptr;
+    std::wstring    m_fileName = L"FOV-Changer-Logs.txt";
+    StorageFile     m_file = nullptr;
 
     Logger()
     {
-        this->file = ApplicationData::Current().LocalFolder().CreateFileAsync(this->fileName, CreationCollisionOption::ReplaceExisting).get();
-        FileIO::AppendTextAsync(file, L"--------------------- " + this->getTimePrefix(L"month day year") + L"--------------------\n").get();
+        this->m_file = ApplicationData::Current().LocalFolder().CreateFileAsync(this->m_fileName, CreationCollisionOption::ReplaceExisting).get();
+        FileIO::AppendTextAsync(m_file, L"--------------------- " + this->getTimePrefix(L"month day year") + L"--------------------\n").get();
     }
 
     const std::wstring& getTimePrefix(const std::wstring& format)
@@ -33,7 +33,7 @@ public:
         formated_msg << L"[" << this->getTimePrefix(L"hour minute second") << L"] " << msg << L"\n";
 
         OutputDebugString(formated_msg.str().c_str());
-        FileIO::AppendTextAsync(file, formated_msg.str()).get();
+        FileIO::AppendTextAsync(m_file, formated_msg.str()).get();
     }
 
     void log(const std::string& msg)

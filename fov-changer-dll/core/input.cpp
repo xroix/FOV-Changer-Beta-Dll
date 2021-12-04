@@ -1,12 +1,14 @@
 #include "input.h"
+#include "../client.h"
 
 
 // For hooks
-static Core::Input::InputListener* g_refInputListener = nullptr;
+static Input::InputListener* g_refInputListener = nullptr;
+static bool lastP = false;
 
 
 /*
-* somePointer:      idk
+* mouseStruct:      A struct containing somewhat parsed info of this func, see ghidra for more
 * mode:             0: moving, 1: left-click, 2: right-click, 3: middle-click, 4: scrolling
 * pressed:          1 if press, 0 if release
 * mouseX:           x coords
@@ -15,17 +17,17 @@ static Core::Input::InputListener* g_refInputListener = nullptr;
 * mouseYvelocity:   y velocity if pointer is captured ( CoreWindow::SetPointerCapture(); )
 * idk:              idk
 */
-void __fastcall hkMouse(int64_t somePointer, byte mode, byte pressed, int16_t mouseX, int16_t mouseY, int16_t mouseXvelocity, int16_t mouseYvelocity, byte idk)
+void __fastcall hkMouse(int64_t mouseStruct_p, byte mode, byte pressed, int16_t mouseX, int16_t mouseY, int16_t mouseXvelocity, int16_t mouseYvelocity, byte idk)
 {
     if (g_refInputListener)
     {
-        std::wostringstream formated_msg;
+        /*std::wostringstream formated_msg;
         formated_msg << L"hkMouse: 1: " << somePointer << L" 2: " << mode << L" 3: " << pressed << L" 4: " << mouseX << L" 5: " << mouseY << L" 6: " << mouseXvelocity << L" 7: " << mouseYvelocity << L" 8: " << idk << L"\n";
-        OutputDebugString(formated_msg.str().c_str());
+        OutputDebugString(formated_msg.str().c_str());*/
 
         // Dont call trampoline if we block it
         if (!g_refInputListener->m_blockGamesInput)
-            g_refInputListener->m_mouseTrampoline(somePointer, mode, pressed, mouseX, mouseY, mouseXvelocity, mouseYvelocity, idk);
+            g_refInputListener->m_mouseTrampoline(mouseStruct_p, mode, pressed, mouseX, mouseY, mouseXvelocity, mouseYvelocity, idk);
     }
 }
 
@@ -34,7 +36,7 @@ void __fastcall hkMouse(int64_t somePointer, byte mode, byte pressed, int16_t mo
 * pressed:  1 if press, 0 if release
 */
 void __fastcall hkKeyboard(int64_t keyCode, int32_t pressed)
-{
+{ 
     if (g_refInputListener)
     {
         std::wostringstream formated_msg;
@@ -44,22 +46,32 @@ void __fastcall hkKeyboard(int64_t keyCode, int32_t pressed)
         // testing with H key
         if (keyCode == 72)
         {
+            auto coreWindow = CoreApplication::MainView().CoreWindow();
+
+            auto& ui = Client::GetUI();
+            if (ui.m_renderer)
+                ui.m_renderer->m_test = !pressed;
+
             if (pressed)
             {
-                g_refInputListener->m_blockGamesInput = true;
-                CoreApplication::MainView().CoreWindow().ReleasePointerCapture();
-                //CoreApplication::MainView().CoreWindow().PointerCursor(CoreCursor(CoreCursorType::Arrow, 0));
-                //*g_refInputListener->m_pointerCapture_p = 0;
+                // Set true, if there was already one
+                lastP = coreWindow.PointerCursor() != nullptr;
+
+                //g_refInputListener->m_blockGamesInput = true;
+                coreWindow.PointerCursor(CoreCursor(CoreCursorType::Arrow, 0));
+                coreWindow.ReleasePointerCapture();
+                
             } else
             {
                 g_refInputListener->m_blockGamesInput = false;
-                *g_refInputListener->m_pointerCapture_p = 1; // Sadly, this is needed
-                CoreApplication::MainView().CoreWindow().SetPointerCapture();
-                CoreApplication::MainView().CoreWindow().PointerCursor(nullptr);
+                coreWindow.SetPointerCapture();
+                if (!lastP)
+                    coreWindow.PointerCursor(nullptr);
 
             }
         }
 
+ 
         // Dont call trampoline if we block it
         if (!g_refInputListener->m_blockGamesInput)
             g_refInputListener->m_keyboardTrampoline(keyCode, pressed);
@@ -67,11 +79,11 @@ void __fastcall hkKeyboard(int64_t keyCode, int32_t pressed)
 }
 
 
-namespace Core::Input
+namespace Input
 {
-    InputListener::InputListener(uintptr_t moduleBase)
-        : m_moduleBase(moduleBase),
-        m_keyMappings((KeyMappings*)(moduleBase + 0x3786020))
+    InputListener::InputListener()
+        : m_moduleBase(Client::Get().m_moduleBase),
+          m_keyMappings((KeyMappings*)(m_moduleBase + 0x402ea20))
     {
     }
 
@@ -79,20 +91,23 @@ namespace Core::Input
     {
         g_refInputListener = this;
 
-        m_pointerCapture_p = (byte*)mem::FindDMAAddy(m_moduleBase + 0x37D3290, { 0x8, 0x68, 0x2F0 });
+        m_pointerCapture_p = (byte*)mem::FindDMAAddy(m_moduleBase + 0x402D0D0, { 0x2F8 });
+
+        uintptr_t hkMouseAddr = mem::GetAddressFromSignature("Minecraft.Windows.exe", "48 ? ? 48 ? ? ? 48 ? ? ? 48 ? ? ? ? 41 ? 41 ? 41 ? 41 ? 48 ? ? ? 44 ? ? ? ? ? ? ? ? 48");
+        uintptr_t hkKeyboardAddr = mem::GetAddressFromSignature("Minecraft.Windows.exe", "48 ? ? ? ? 57 48 ? ? ? 8b ? ? ? ? ? 8B ? 89"); 
 
         // Register hooks
-        if (MH_CreateHook((void*)(m_moduleBase + 0x2364350), &hkMouse, reinterpret_cast<LPVOID*>(&m_mouseTrampoline)) != MH_OK)
+        if (MH_CreateHook((void*)hkMouseAddr, &hkMouse, reinterpret_cast<LPVOID*>(&m_mouseTrampoline)) != MH_OK)
             LOG(L"Minhook: create hook InputListerner: hkMouse failed!");
 
-        if (MH_CreateHook((void*)(m_moduleBase + 0x529F90), &hkKeyboard, reinterpret_cast<LPVOID*>(&m_keyboardTrampoline)) != MH_OK)
+        if (MH_CreateHook((void*)hkKeyboardAddr, &hkKeyboard, reinterpret_cast<LPVOID*>(&m_keyboardTrampoline)) != MH_OK)
             LOG(L"Minhook: create hook InputListerner: hkKeyboard failed!");
 
         // Enable Hooks
-        if (MH_EnableHook((void*)(m_moduleBase + 0x2364350)) != MH_OK)
+        if (MH_EnableHook((void*)hkMouseAddr) != MH_OK)
             LOG(L"Minhook: enable hook InputListerner: hkMouse failed!");
 
-        if (MH_EnableHook((void*)(m_moduleBase + 0x529F90)) != MH_OK)
+        if (MH_EnableHook((void*)hkKeyboardAddr) != MH_OK)
             LOG(L"Minhook: enable hook InputListerner: hkKeyboard failed!");
     }
 

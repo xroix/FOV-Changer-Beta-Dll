@@ -1,11 +1,11 @@
 #include "settings.h"
 
 
-namespace Core::Settings
+namespace Settings
 {
 	////////////////////////////////// Group //////////////////////////////////
 
-	Core::Settings::Group::Group(const std::string id, const std::string label, std::map<std::string, std::shared_ptr<IOption>> options)
+	Settings::Group::Group(const std::string id, const std::string label, std::map<std::string, std::shared_ptr<IOption>> options)
 	{
 		m_id = id;
 		m_label = label;
