@@ -224,6 +224,8 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
             DXGI_SWAP_CHAIN_FLAG_FOREGROUND_LAYER
         );
 
+        m_swapChain->Release();
+
         if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
         {
             // If the device was removed for any reason, a new device and swap chain will need to be created.

@@ -171,7 +171,7 @@ void InjectedThread(HMODULE hModule)
 
     auto& ui = Client::GetUI();
     auto& moduleManager = Client::GetModuleManager();
-    auto& inputListener = Client::GetInputListener();
+    //auto& inputListener = Client::GetInputListener();
 
     // DirectX cant run in this thread, if I'm not mistaken
     ui.StartRenderThread();
@@ -188,7 +188,7 @@ void InjectedThread(HMODULE hModule)
         INTINPUT("test01", "Some test")
     });
 
-    inputListener.initGameData();
+    //inputListener.initGameData();
     try
     {   
         moduleManager.initGameData();
@@ -217,7 +217,7 @@ void InjectedThread(HMODULE hModule)
     while (true)
     {
         // END
-        if (GetAsyncKeyState(VK_END) & 1 || inputListener.m_keyMappings->END)
+        if (GetAsyncKeyState(VK_END) & 1) // || inputListener.m_keyMappings->END)
         {
             ui.InvokeAsUIThreadAsync([]()
             {

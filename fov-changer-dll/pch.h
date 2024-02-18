@@ -66,11 +66,11 @@
 #pragma comment(lib, "libMinHook.x86.lib")
 #endif
 
-#ifdef _DEBUG
-#pragma comment(lib,"libzmq-mt-sgd-4_3_3.lib")
-#else
-#pragma comment(lib,"libzmq-mt-s-4_3_3.lib")
-#endif
+//#ifdef _DEBUG
+//#pragma comment(lib,"libzmq-mt-sgd-4_3_3.lib")
+//#else
+//#pragma comment(lib,"libzmq-mt-s-4_3_3.lib")
+//#endif
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "Iphlpapi.lib")

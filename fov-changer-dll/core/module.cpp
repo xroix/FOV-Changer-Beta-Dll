@@ -89,9 +89,9 @@ namespace Module
 	ModuleManager::ModuleManager()
 	{
 		// Add here modules
-		this->m_modules.push_back(std::make_shared<Zoom>());
-		this->m_modules.push_back(std::make_shared<Freelook>());
-		this->m_modules.push_back(std::make_shared<Test>());
+		//this->m_modules.push_back(std::make_shared<Zoom>());
+		//this->m_modules.push_back(std::make_shared<Freelook>());
+		//this->m_modules.push_back(std::make_shared<Test>());
 	}
 
 	ModuleManager::~ModuleManager()

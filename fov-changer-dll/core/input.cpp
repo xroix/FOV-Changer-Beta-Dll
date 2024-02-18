@@ -57,16 +57,21 @@ void __fastcall hkKeyboard(int64_t keyCode, int32_t pressed)
                 // Set true, if there was already one
                 lastP = coreWindow.PointerCursor() != nullptr;
 
-                //g_refInputListener->m_blockGamesInput = true;
-                coreWindow.PointerCursor(CoreCursor(CoreCursorType::Arrow, 0));
-                coreWindow.ReleasePointerCapture();
+                g_refInputListener->m_blockGamesInput = true;
+
+                ui.InvokeAsUIThreadAsync([]() {
+                    CoreWindow::GetForCurrentThread().PointerCursor(CoreCursor(CoreCursorType::Arrow, 0));
+                });
                 
             } else
             {
                 g_refInputListener->m_blockGamesInput = false;
-                coreWindow.SetPointerCapture();
+
                 if (!lastP)
-                    coreWindow.PointerCursor(nullptr);
+                    ui.InvokeAsUIThreadAsync([]()
+                    {
+                        CoreWindow::GetForCurrentThread().PointerCursor(nullptr);
+                    });
 
             }
         }
@@ -91,7 +96,15 @@ namespace Input
     {
         g_refInputListener = this;
 
-        m_pointerCapture_p = (byte*)mem::FindDMAAddy(m_moduleBase + 0x402D0D0, { 0x2F8 });
+        // TODO(xroix): proper error handling for m_pointerCapture_p
+        try
+        {
+            m_pointerCapture_p = (byte*)mem::FindDMAAddy(m_moduleBase + 0x402D0D0, { 0x2F8 });
+
+        } catch (...)
+        {
+            m_pointerCapture_p = nullptr;
+        }
 
         uintptr_t hkMouseAddr = mem::GetAddressFromSignature("Minecraft.Windows.exe", "48 ? ? 48 ? ? ? 48 ? ? ? 48 ? ? ? ? 41 ? 41 ? 41 ? 41 ? 48 ? ? ? 44 ? ? ? ? ? ? ? ? 48");
         uintptr_t hkKeyboardAddr = mem::GetAddressFromSignature("Minecraft.Windows.exe", "48 ? ? ? ? 57 48 ? ? ? 8b ? ? ? ? ? 8B ? 89"); 

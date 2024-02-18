@@ -19,7 +19,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommand>Z:\User\Desktop\MCLauncher\Minecraft-1.17.11.1\Minecraft.Windows.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommand>Z:\User\Desktop\MCLauncher\Minecraft-1.19.0.5\Minecraft.Windows.exe</LocalDebuggerCommand>
     <LocalDebuggerAttach>true</LocalDebuggerAttach>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
